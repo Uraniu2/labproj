@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "comandos.h"
 
 void mostrar_menu();
 void ler_mapa(const char *filename);
