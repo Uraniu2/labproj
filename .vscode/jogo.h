@@ -1,17 +1,26 @@
 #ifndef JOGO_H
 #define JOGO_H
 
-#define MAX 20
+#define MAX 50
+#define HIST 100
 
 typedef struct {
-    int linhas;
-    int colunas;
+    int linhas, colunas;
     char tabuleiro[MAX][MAX];
 } Jogo;
 
-int carregar_jogo(Jogo *jogo, const char *ficheiro);
-void mostrar_jogo(Jogo *jogo);
-int pintar_branco(Jogo *jogo, int linha, int coluna);
-int riscar(Jogo *jogo, int linha, int coluna);
+typedef struct {
+    Jogo estados[HIST];
+    int topo;
+} Historico;
+
+int carregar_jogo(Jogo *j, const char *ficheiro);
+void pintar_branco(Jogo *j, int linha, int coluna);
+void riscar(Jogo *j, int linha, int coluna);
+void copiar_jogo(Jogo *dest, Jogo *orig);
+void guardar_estado(Historico *h, Jogo *j);
+int desfazer(Historico *h, Jogo *j);
+void mostrar_tabuleiro(Jogo *j);
+void verificar_regras(Jogo *j);
 
 #endif
