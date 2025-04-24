@@ -1,29 +1,35 @@
-# Compiler
+# Compiler and flags
 CC = gcc
+CFLAGS = -Wall -Wextra -pedantic
 
-# Compiler flags
-CFLAGS = -Wall -Wextra -std=c11
-
-# Target executable name
-TARGET = program
+# Output executable
+EXEC = jogo
 
 # Source files
-SRCS = main.c menu.c
+SRCS = main.c menu.c logic.c
 
-# Object files
+# Object files (created by compiling source files)
 OBJS = $(SRCS:.c=.o)
 
-# Default target
-all: $(TARGET)
+# Default target to build the executable
+all: $(EXEC)
 
-# Linking
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $^
+# Rule to link the object files into the final executable
+$(EXEC): $(OBJS)
+	$(CC) $(OBJS) -o $(EXEC)
 
-# Compiling
+# Rule to compile each .c file into .o object files
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $<
 
-# Clean up
+# Clean up object files and the executable
 clean:
-	del /f /q $(TARGET).exe *.o 2>nul || rm -f $(TARGET) *.o
+	rm -f $(OBJS) $(EXEC)
+
+# Run the program
+run: $(EXEC)
+	./$(EXEC)
+
+# Make sure 'clean' and 'run' are not treated as filenames
+.PHONY: all clean run
+

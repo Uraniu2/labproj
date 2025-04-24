@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 void mostrar_menu() {
+    system("clear");
     printf("\n=== MENU ===\n");
     printf("1. Start\n");
     printf("2. DEBUG\n");
