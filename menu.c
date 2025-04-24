@@ -1,57 +1,45 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <assert.h>
 
-#ifndef MENU_H
-#define MENU_H
-
+// Função para imprimir o menu
 void menuprintf() {
-
     printf("\n=== MENU ===\n");
     printf("1. Start\n");
     printf("2. DEBUG\n");
     printf("3. Exit\n");
-    printf("\nSelect the number\n");
-
+    printf("Select an option (1-3): ");
 }
 
-void start(){
-
-    //call main.c
-    printf("Select the a number if Colums & Lines\n");
-
+// Funções associadas a cada opção
+void start() {
+    printf("Start selecionado. (Aqui chamarias a lógica de jogo)\n");
+    // Aqui poderias invocar o REPL ou carregar o tabuleiro
 }
 
-void debug(){
-
-    printf("NO FUNCTION TO THIS YET\n");
-
+void debug() {
+    printf("DEBUG selecionado. (Modo de teste ou extra)\n");
 }
 
-void Cexit(){
-
+void Cexit() {
+    printf("A sair...\n");
     exit(0);
-
 }
 
-
-
-//void ShowMenu() {
-int main() {
-
+// Função chamada pelo main.c
+void mostrar_menu() {
+    int opcao;
     menuprintf();
 
-    int Mselector;
-    //char MSselector [30] = {0};
+    if (scanf("%d", &opcao) != 1) {
+        printf("Entrada inválida.\n");
+        return;
+    }
 
-    assert((scanf("%d", &Mselector))==1);
-    
-    if (Mselector == 1) start();
-    if (Mselector == 2) debug();
-    if (Mselector == 3) Cexit();
-    
+    switch (opcao) {
+        case 1: start(); break;
+        case 2: debug(); break;
+        case 3: Cexit(); break;
+        default: printf("Opção inválida.\n");
+    }
 }
-
-
-#endif
