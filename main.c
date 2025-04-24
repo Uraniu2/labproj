@@ -1,26 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <assert.h>
 
-#include "menu.c"
-
-
-
-
+void mostrar_menu();
+void ler_mapa(const char *filename);
+void imprimir_mapa();
 
 int main() {
     mostrar_menu();  
 
-    
     ler_mapa("mapa.txt");  
     imprimir_mapa();        
 
    
 
     return 0;
-}
-//struck
-// stack de undo 
+} 
 
 
