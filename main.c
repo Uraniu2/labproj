@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
-#include <assert.h>
 
-#include "menu.c"
-
-
-
-
+void mostrar_menu();
+void ler_mapa(const char *filename);
+void imprimir_mapa();
 
 int main() {
-    mostrar_menu();
-    // E depois continuas com o loop do jogo se for opção 1, por exemplo
+    mostrar_menu();  
+
+    
+    ler_mapa("mapa.txt");  
+    imprimir_mapa();        
+
+   
+
     return 0;
 }
 //struck
