@@ -17,14 +17,12 @@ int carregar_jogo(Jogo *j, const char *ficheiro) {
     return 1;
 }
 
-void mostrar_tabuleiro(Jogo *j) {
-    printf(" a b c ->...");
+void mostrar_tabuleiro(Jogo *j) { //POR BONITO AAKA POR AS CORDENADAS EMCIMA PRO PAVLO PRONTOS 
     for (int i = 0; i < j->linhas; i++) {
         for (int k = 0; k < j->colunas; k++) {
             printf("%c ", j->tabuleiro[i][k]);
         }
         printf("\n");
-        //cord++;
     }
 }
 
@@ -70,7 +68,7 @@ void verificar_regras(Jogo *j) {
             char c = j->tabuleiro[i][k];
             if (c >= 'A' && c <= 'Z') {
                 if (usados[(int)c]++) {
-                    printf("Repetição '%c' na linha %d\n", c, i+1);
+                    printf("X Repetição '%c' na linha %d\n", c, i+1);
                     erro = 1;
                 }
             }
@@ -83,7 +81,7 @@ void verificar_regras(Jogo *j) {
             char c = j->tabuleiro[i][k];
             if (c >= 'A' && c <= 'Z') {
                 if (usados[(int)c]++) {
-                    printf("Repetição '%c' na coluna %c\n", c, 'a' + k);
+                    printf("❌ Repetição '%c' na coluna %c\n", c, 'a' + k);
                     erro = 1;
                 }
             }
@@ -101,7 +99,7 @@ void verificar_regras(Jogo *j) {
                 if (k < j->colunas-1 && j->tabuleiro[i][k+1] >= 'A' && j->tabuleiro[i][k+1] <= 'Z') tem_branco = 1;
 
                 if (!tem_branco) {
-                    printf("Casa #(%d,%c) sem vizinho branco\n", i+1, 'a'+k);
+                    printf("❌ Casa #(%d,%c) sem vizinho branco\n", i+1, 'a'+k);
                     erro = 1;
                 }
             }
@@ -109,5 +107,5 @@ void verificar_regras(Jogo *j) {
     }
 
     if (!erro)
-        printf("Nenhuma regra foi violada\n");
+        printf("✅ Nenhuma regra foi violada\n");
 }
