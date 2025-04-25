@@ -18,7 +18,7 @@ int carregar_jogo(Jogo *j, const char *ficheiro) {
 }
 
 void mostrar_tabuleiro(Jogo *j) {
-    printf(" a b c ->...")
+    printf(" a b c ->...");
     for (int i = 0; i < j->linhas; i++) {
         for (int k = 0; k < j->colunas; k++) {
             printf("%c ", j->tabuleiro[i][k]);
