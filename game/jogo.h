@@ -15,6 +15,7 @@ typedef struct {
 } Historico;
 
 int carregar_jogo(Jogo *j, const char *ficheiro);
+int verificar_conectividade(Jogo *j);
 void pintar_branco(Jogo *j, int linha, int coluna);
 void riscar(Jogo *j, int linha, int coluna);
 void copiar_jogo(Jogo *dest, Jogo *orig);

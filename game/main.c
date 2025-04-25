@@ -38,8 +38,11 @@ int main() {
             mostrar_tabuleiro(&jogo);
         } else if (cmd[0] == 'v') {
             verificar_regras(&jogo);
+            verificar_conectividade(&jogo);
         } else if (cmd[0] == 'd') {
+
             if (desfazer(&hist, &jogo)) {
+
                 printf("Última jogada desfeita.\n");
                 mostrar_tabuleiro(&jogo);
             } else {
