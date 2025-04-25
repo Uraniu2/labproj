@@ -18,18 +18,26 @@ typedef struct {
 
 int carregar_jogo(Jogo *j, const char *ficheiro) {
     FILE *f = fopen(ficheiro, "r");
-    if (!f) return 0;
+    if (!f) return 0;  
 
-    fscanf(f, "%d %d\n", &j->linhas, &j->colunas);
-    for (int i = 0; i < j->linhas; i++) {
-        for (int k = 0; k < j->colunas; k++) {
-            fscanf(f, "%c", &j->tabuleiro[i][k]);
-        }
-        fscanf(f, "\n");
+    if (fscanf(f, "%d %d\n", &j->linhas, &j->colunas) != 2) {
+        fclose(f);
+        return 0;  
     }
 
-    fclose(f);
-    return 1;
+    
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            
+            if (fscanf(f, " %c", &j->tabuleiro[i][k]) != 1) {
+                fclose(f);
+                return 0;  
+            }
+        }
+    }
+
+    fclose(f); 
+    return 1;  
 }
 
 void mostrar_tabuleiro(Jogo *j) {
@@ -43,7 +51,7 @@ void mostrar_tabuleiro(Jogo *j) {
 
 void pintar_branco(Jogo *j, int linha, int coluna) {
     if (j->tabuleiro[linha][coluna] >= 'a' && j->tabuleiro[linha][coluna] <= 'z') {
-        j->tabuleiro[linha][coluna] -= 32; // minúscula -> maiúscula
+        j->tabuleiro[linha][coluna] -= 32; // minúscula -> maiuscula
         printf("Pintado a branco: %c\n", j->tabuleiro[linha][coluna]);
     }
 }
