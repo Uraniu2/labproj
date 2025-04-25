@@ -40,10 +40,10 @@ int main() {
             verificar_regras(&jogo);
         } else if (cmd[0] == 'd') {
             if (desfazer(&hist, &jogo)) {
-                printf("✅ Última jogada desfeita.\n");
+                printf("Última jogada desfeita.\n");
                 mostrar_tabuleiro(&jogo);
             } else {
-                printf("⚠️ Nada para desfazer.\n");
+                printf("Nada para desfazer.\n");
             }
         } else {
             printf("Comando desconhecido.\n");
