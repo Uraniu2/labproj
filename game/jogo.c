@@ -18,11 +18,13 @@ int carregar_jogo(Jogo *j, const char *ficheiro) {
 }
 
 void mostrar_tabuleiro(Jogo *j) {
+    printf(" a b c ->...")
     for (int i = 0; i < j->linhas; i++) {
         for (int k = 0; k < j->colunas; k++) {
             printf("%c ", j->tabuleiro[i][k]);
         }
         printf("\n");
+        cord++;
     }
 }
 
@@ -61,7 +63,7 @@ int desfazer(Historico *h, Jogo *j) {
 void verificar_regras(Jogo *j) {
     int erro = 0;
 
-    // Regras de duplicação em branco (maiúsculas)
+    // Regras de duplicação em branco (maiusculas)
     for (int i = 0; i < j->linhas; i++) {
         int usados[256] = {0};
         for (int k = 0; k < j->colunas; k++) {
@@ -99,7 +101,7 @@ void verificar_regras(Jogo *j) {
                 if (k < j->colunas-1 && j->tabuleiro[i][k+1] >= 'A' && j->tabuleiro[i][k+1] <= 'Z') tem_branco = 1;
 
                 if (!tem_branco) {
-                    printf("❌ Casa #%d,%c sem vizinho branco\n", i+1, 'a'+k);
+                    printf("❌ Casa #(%d,%c) sem vizinho branco\n", i+1, 'a'+k);
                     erro = 1;
                 }
             }
