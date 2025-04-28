@@ -15,7 +15,29 @@ typedef struct {
 } Historico;
 
 // Funções
+int gravar_jogo(const Jogo *j, const char ficheiro) {
+    FILE *f = fopen(ficheiro, "w");
+    if (!f) return 0; 
 
+    if (fprintf(f, "%d %d\n", j->linhas, j->colunas) < 0) {
+        fclose(f);
+        return 0;
+    }
+
+
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            if (fprintf(f, "%c", j->tabuleiro[i][k]) < 0) {
+                fclose(f);
+                return 0;
+            }
+        }
+        fprintf(f, "\n");
+    }
+
+    fclose(f);
+    return 1;
+}
 int carregar_jogo(Jogo *j, const char *ficheiro) {
 
     FILE *f = fopen(ficheiro, "r");
@@ -58,6 +80,9 @@ void mostrar_tabuleiro(Jogo *j) {
 
     }
 }
+
+
+
 
 void pintar_branco(Jogo *j, int linha, int coluna) {
 
@@ -235,7 +260,7 @@ int verificar_conectividade(Jogo *j) {
 
                 printf("Casa branca isolada em %c%d\n", 'a' + k, i + 1);
                 return 0;
-                
+
             }
         }
     }

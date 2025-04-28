@@ -65,11 +65,28 @@ int main() {
                 printf("Nada para desfazer.\n");
 
             }
-        } else {
+        }else if (cmd[0] == 'g') {
+            char nome[50];
+            char ficheiro[100];
+            sscanf(cmd, "g %s", nome);
+
+            sprintf(ficheiro, "%s.txt", nome);
+
+            if (gravar_jogo(&jogo, ficheiro)) 
+            {
+                printf("Tabuleiro guardado\n");
+            } 
+            else 
+            {
+                printf("Erro ao guardar tabuleiro\n");
+            }
+        }
+         else {
 
             printf("Comando desconhecido.\n");
-            
+
         }
+        
     }
 
     printf("Adeus!\n");
