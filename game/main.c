@@ -43,7 +43,7 @@ int main() {
 
             if (desfazer(&hist, &jogo)) {
 
-                printf("Última jogada desfeita.\n");
+                printf("Ultima jogada desfeita.\n");
                 mostrar_tabuleiro(&jogo);
             } else {
                 printf("Nada para desfazer.\n");

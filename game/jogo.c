@@ -91,7 +91,7 @@ void verificar_regras(Jogo *j) {
             char c = j->tabuleiro[i][k];
             if (c >= 'A' && c <= 'Z') {
                 if (usados[(int)c]++) {
-                    printf("X Repetição '%c' na linha %d\n", c, i+1);
+                    printf("X Repeticao '%c' na linha %d\n", c, i+1);
                     erro = 1;
                 }
             }
@@ -104,7 +104,7 @@ void verificar_regras(Jogo *j) {
             char c = j->tabuleiro[i][k];
             if (c >= 'A' && c <= 'Z') {
                 if (usados[(int)c]++) {
-                    printf("Repetição '%c' na coluna %c\n", c, 'a' + k);
+                    printf("Repeticao '%c' na coluna %c\n", c, 'a' + k);
                     erro = 1;
                 }
             }
@@ -150,7 +150,7 @@ int verificar_conectividade(Jogo *j) {
     }
 
     if (start_i == -1) {
-        printf("Não há casas brancas.\n");
+        printf("Nao ha casas brancas.\n");
         return 0;
     }
 
