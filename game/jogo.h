@@ -23,7 +23,6 @@ void guardar_estado(Historico *h, Jogo *j);
 int desfazer(Historico *h, Jogo *j);
 void mostrar_tabuleiro(Jogo *j);
 void verificar_regras(Jogo *j);
-int gravar_jogo(Jogo *j, const char *ficheiro);
-
+int gravar_jogo(Jogo *j, const char *ficheiro);//a
 
 #endif
