@@ -211,7 +211,7 @@ void verificar_regras(Jogo *j) {
 
 }
 
-int verificar_conectividade(Jogo *j) {
+int verificar_conectividade1(Jogo *j) {
 
     int visitado[MAX][MAX] = {{0}};
     int dx[] = {0, 1, 0, -1};
