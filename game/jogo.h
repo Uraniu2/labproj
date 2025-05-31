@@ -15,14 +15,18 @@ typedef struct {
 } Historico;
 
 int carregar_jogo(Jogo *j, const char *ficheiro);
-int verificar_conectividade1(Jogo *j);
+int gravar_jogo(Jogo *j, const char *ficheiro);
+void mostrar_tabuleiro(Jogo *j);
 void pintar_branco(Jogo *j, int linha, int coluna);
 void riscar(Jogo *j, int linha, int coluna);
 void copiar_jogo(Jogo *dest, Jogo *orig);
 void guardar_estado(Historico *h, Jogo *j);
 int desfazer(Historico *h, Jogo *j);
-void mostrar_tabuleiro(Jogo *j);
 void verificar_regras(Jogo *j);
-int gravar_jogo(Jogo *j, const char *ficheiro);//a
+int verificar_conectividade1(Jogo *j);
+
+// NOVO: Dica e resolução
+int dica(Jogo *j);
+void resolver(Jogo *j);
 
 #endif

@@ -51,7 +51,7 @@ int main() {
         } else if (cmd[0] == 'v') {
 
             verificar_regras(&jogo);
-            verificar_conectividade(&jogo);
+            verificar_conectividade1(&jogo);
 
         } else if (cmd[0] == 'd') {
 
@@ -65,7 +65,7 @@ int main() {
                 printf("Nada para desfazer.\n");
 
             }
-        }else if (cmd[0] == 'g') {
+        } else if (cmd[0] == 'g') {
             char nome[50];
             sscanf(cmd, "g %s", nome);
             char ficheiro[100];
@@ -77,6 +77,19 @@ int main() {
             } else {
                 printf("Erro ao guardar tabuleiro\n");
             }
+        } else if (cmd[0] == 'a') {
+            // Dica: aplica um passo automático
+            guardar_estado(&hist, &jogo);
+            if (dica(&jogo)) {
+                mostrar_tabuleiro(&jogo);
+            } else {
+                printf("Nenhuma dica possível.\n");
+            }
+        } else if (cmd[0] == 'R' || cmd[0] == 'A') {
+            // Resolve tudo automaticamente
+            guardar_estado(&hist, &jogo);
+            resolver(&jogo);
+            mostrar_tabuleiro(&jogo);
         } else {
 
             printf("Comando desconhecido.\n");

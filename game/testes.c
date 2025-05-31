@@ -1,270 +1,218 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 
-#define TAMANHO 5
+#define TAM 5
 
 typedef struct {
-    int linhas;
-    int colunas;
-    char tabuleiro[100][100];
+    int linhas, colunas;
+    char tab[TAM][TAM];
 } Jogo;
 
-typedef struct {
-    int i, j;
-} Posicao;
-
-void imprimirTabuleiro(char tabuleiro[TAMANHO][TAMANHO]) {
-    for (int i = 0; i < TAMANHO; i++) {
-        for (int j = 0; j < TAMANHO; j++) {
-            printf("%c ", tabuleiro[i][j]);
-        }
+// Imprime o tabuleiro
+void imprimir(Jogo *j) {
+    printf("   ");
+    for (int c = 0; c < j->colunas; c++)
+        printf("%c ", 'a' + c);
+    printf("\n");
+    for (int l = 0; l < j->linhas; l++) {
+        printf("%2d ", l + 1);
+        for (int c = 0; c < j->colunas; c++)
+            printf("%c ", j->tab[l][c]);
         printf("\n");
     }
+    printf("\n");
 }
 
-void riscar1(char tabuleiro[TAMANHO][TAMANHO], int i, int j) {
-    tabuleiro[i][j] = '#';
+// Função auxiliar: verifica se dentro dos limites
+int dentro(Jogo *j, int l, int c) {
+    return l >= 0 && l < j->linhas && c >= 0 && c < j->colunas;
 }
 
-void pintarBranco(char tabuleiro[TAMANHO][TAMANHO], int i, int j) {
-    tabuleiro[i][j] = toupper(tabuleiro[i][j]);
+// DFS para conectividade das casas brancas
+void dfs(Jogo *j, int l, int c, int vis[TAM][TAM]) {
+    if (!dentro(j, l, c) || vis[l][c] || !isupper(j->tab[l][c])) return;
+    vis[l][c] = 1;
+    dfs(j, l + 1, c, vis);
+    dfs(j, l - 1, c, vis);
+    dfs(j, l, c + 1, vis);
+    dfs(j, l, c - 1, vis);
 }
 
-int temDuplicataNaLinha(char tabuleiro[TAMANHO][TAMANHO], int linha, char letra) {
-    int contador = 0;
-    for (int j = 0; j < TAMANHO; j++) {
-        if (tabuleiro[linha][j] == letra) {
-            contador++;
-            if (contador > 1) return 1;
-        }
-    }
-    return 0;
-}
-
-int temDuplicataNaColuna(char tabuleiro[TAMANHO][TAMANHO], int coluna, char letra) {
-    int contador = 0;
-    for (int i = 0; i < TAMANHO; i++) {
-        if (tabuleiro[i][coluna] == letra) {
-            contador++;
-            if (contador > 1) return 1;
-        }
-    }
-    return 0;
-}
-
-int diagonais_riscadas(char tabuleiro[TAMANHO][TAMANHO]) {
-    for (int k = 0; k < 2 * TAMANHO - 1; k++) {
-        int freq[26] = {0};  
-        for (int i = 0; i < TAMANHO; i++) {
-            int j = k - i;
-            if (j >= 0 && j < TAMANHO) {
-                char c = tabuleiro[i][j];
-                if (c >= 'A' && c <= 'Z') {
-                    int idx = c - 'A';
-                    if (freq[idx] > 0)
-                        return 0;
-                    freq[idx]++;
-                }
+// Retorna 1 se todas as casas brancas estão conectadas ortogonalmente
+int todasConectadas(Jogo *j) {
+    int vis[TAM][TAM] = {0};
+    int l, c, achou = 0;
+    for (l = 0; l < j->linhas && !achou; l++)
+        for (c = 0; c < j->colunas && !achou; c++)
+            if (isupper(j->tab[l][c])) {
+                dfs(j, l, c, vis);
+                achou = 1;
             }
-        }
-    }
-
-    for (int k = 0; k < 2 * TAMANHO - 1; k++) {
-        int freq[26] = {0};
-        for (int i = 0; i < TAMANHO; i++) {
-            int j = k - (TAMANHO - 1 - i);
-            if (j >= 0 && j < TAMANHO) {
-                char c = tabuleiro[i][j];
-                if (c >= 'A' && c <= 'Z') {
-                    int idx = c - 'A';
-                    if (freq[idx] > 0)
-                        return 0;
-                    freq[idx]++;
-                }
-            }
-        }
-    }
-
-    return 1;
-}
-
-int vizinho_riscado(char tabuleiro[TAMANHO][TAMANHO], int linhas, int colunas, int i, int j) {
-    int di[] = {-1, 1, 0, 0};
-    int dj[] = {0, 0, -1, 1};
-
-    for (int k = 0; k < 4; k++) {
-        int ni = i + di[k];
-        int nj = j + dj[k];
-        if (ni >= 0 && ni < linhas && nj >= 0 && nj < colunas) {
-            if (tabuleiro[ni][nj] == '#') return 1;
-        }
-    }
-    return 0;
-}
-
-int dentroDoTabuleiro(int i, int j) {
-    return i >= 0 && i < TAMANHO && j >= 0 && j < TAMANHO;
-}
-
-void dfs(char tabuleiro[TAMANHO][TAMANHO], int visitado[TAMANHO][TAMANHO], int i, int j) {
-    int di[] = {-1, 1, 0, 0};
-    int dj[] = {0, 0, -1, 1};
-
-    visitado[i][j] = 1;
-
-    for (int k = 0; k < 4; k++) {
-        int ni = i + di[k];
-        int nj = j + dj[k];
-
-        if (dentroDoTabuleiro(ni, nj)
-            && !visitado[ni][nj]
-            && tabuleiro[ni][nj] != '#'
-            && (tabuleiro[ni][nj] >= 'A' && tabuleiro[ni][nj] <= 'Z')) {
-            dfs(tabuleiro, visitado, ni, nj);
-        }
-    }
-}
-
-int todasConectadas(char tabuleiro[TAMANHO][TAMANHO]) {
-    int visitado[TAMANHO][TAMANHO] = {0};
-    int encontrou = 0;
-    int start_i = -1, start_j = -1;
-
-    for (int i = 0; i < TAMANHO && !encontrou; i++) {
-        for (int j = 0; j < TAMANHO && !encontrou; j++) {
-            if (tabuleiro[i][j] >= 'A' && tabuleiro[i][j] <= 'Z') {
-                start_i = i;
-                start_j = j;
-                encontrou = 1;
-            }
-        }
-    }
-
-    if (!encontrou)
-        return 1;
-
-    dfs(tabuleiro, visitado, start_i, start_j);
-
-    for (int i = 0; i < TAMANHO; i++) {
-        for (int j = 0; j < TAMANHO; j++) {
-            if ((tabuleiro[i][j] >= 'A' && tabuleiro[i][j] <= 'Z') && !visitado[i][j])
+    if (!achou) return 1; // nenhum branco = ok
+    for (l = 0; l < j->linhas; l++)
+        for (c = 0; c < j->colunas; c++)
+            if (isupper(j->tab[l][c]) && !vis[l][c])
                 return 0;
-        }
-    }
-
     return 1;
 }
 
-void aplicarRegras(char tabuleiro[TAMANHO][TAMANHO]) {
-    int casasRiscadas[TAMANHO][TAMANHO] = {0};
-    Posicao candidatos[100];
-    int total = 0;
-
-    for (int i = 0; i < TAMANHO; i++)
-        for (int j = 0; j < TAMANHO; j++)
-            pintarBranco(tabuleiro, i, j);
-
-    for (int i = 0; i < TAMANHO; i++) {
-        for (int j = 0; j < TAMANHO; j++) {
-            char letra = tabuleiro[i][j];
-            if ((letra >= 'A' && letra <= 'Z') &&
-                (temDuplicataNaLinha(tabuleiro, i, letra) || temDuplicataNaColuna(tabuleiro, j, letra)) &&
-                !casasRiscadas[i][j]) {
-                candidatos[total].i = i;
-                candidatos[total].j = j;
-                total++;
+// RISCA todas as réplicas de símbolos nas linhas e colunas se já existir a versão maiúscula
+int riscar_replicas(Jogo *j) {
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            char c = j->tab[i][k];
+            if (c >= 'a' && c <= 'z') {
+                for (int cc = 0; cc < j->colunas; cc++)
+                    if (j->tab[i][cc] == toupper(c)) {
+                        j->tab[i][k] = '#';
+                        printf("Dica: Risquei '%c' em %c%d\n", c, 'a'+k, i+1);
+                        return 1;
+                    }
+                for (int ll = 0; ll < j->linhas; ll++)
+                    if (j->tab[ll][k] == toupper(c)) {
+                        j->tab[i][k] = '#';
+                        printf("Dica: Risquei '%c' em %c%d\n", c, 'a'+k, i+1);
+                        return 1;
+                    }
             }
         }
     }
-
-    for (int k = 0; k < total; k++) {
-        int i = candidatos[k].i;
-        int j = candidatos[k].j;
-
-        char copia[TAMANHO][TAMANHO];
-        for (int x = 0; x < TAMANHO; x++)
-            for (int y = 0; y < TAMANHO; y++)
-                copia[x][y] = tabuleiro[x][y];
-
-        copia[i][j] = '#';
-
-        int pode_riscar = 0;
-
-        if (vizinho_riscado(tabuleiro, TAMANHO, TAMANHO, i, j)) {
-            if (diagonais_riscadas(copia)) {
-                pode_riscar = 1;
-            }
-        } else {
-            if (todasConectadas(copia)) {
-                pode_riscar = 1;
-            }
-        }
-
-        if (pode_riscar) {
-            riscar1(tabuleiro, i, j);
-            casasRiscadas[i][j] = 1;
-        }
-    }
+    return 0;
 }
 
-// 🔍 Verificação final da solução
-void verificarTabuleiroFinal(char tabuleiro[TAMANHO][TAMANHO]) {
-    int valido = 1;
-
-    for (int i = 0; i < TAMANHO; i++) {
-        for (char letra = 'A'; letra <= 'Z'; letra++) {
-            if (temDuplicataNaLinha(tabuleiro, i, letra)) {
-                printf("Letra %c duplicada na linha %d\n", letra, i);
-                valido = 0;
+// PINTA de branco todos os vizinhos ortogonais de uma casa riscada, se possível
+int pintar_vizinho_riscada(Jogo *j) {
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            if (j->tab[i][k] == '#') {
+                int dl[4] = {-1, 1, 0, 0}, dc[4] = {0, 0, -1, 1};
+                for (int d = 0; d < 4; d++) {
+                    int ni = i + dl[d], nj = k + dc[d];
+                    if (dentro(j, ni, nj)) {
+                        char c = j->tab[ni][nj];
+                        if (c >= 'a' && c <= 'z') {
+                            // Só pode pintar se não há já maiúscula igual na linha/coluna
+                            int pode = 1;
+                            for (int x = 0; x < j->colunas; x++)
+                                if (j->tab[ni][x] == toupper(c)) pode = 0;
+                            for (int x = 0; x < j->linhas; x++)
+                                if (j->tab[x][nj] == toupper(c)) pode = 0;
+                            if (pode) {
+                                j->tab[ni][nj] = toupper(c);
+                                printf("Dica: Pintei vizinho '%c' de branco em %c%d\n", c, 'a'+nj, ni+1);
+                                return 1;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+    return 0;
+}
 
-    for (int j = 0; j < TAMANHO; j++) {
-        for (char letra = 'A'; letra <= 'Z'; letra++) {
-            if (temDuplicataNaColuna(tabuleiro, j, letra)) {
-                printf("Letra %c duplicada na coluna %d\n", letra, j);
-                valido = 0;
+// PINTA de branco se riscar isola as casas brancas
+int pintar_para_nao_isolar(Jogo *j) {
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            char c = j->tab[i][k];
+            if (c >= 'a' && c <= 'z') {
+                char temp = j->tab[i][k];
+                j->tab[i][k] = '#';
+                int ligado = todasConectadas(j);
+                j->tab[i][k] = temp;
+                if (!ligado) {
+                    j->tab[i][k] = toupper(c);
+                    printf("Dica: Pintei '%c' de branco (para não isolar) em %c%d\n", c, 'a'+k, i+1);
+                    return 1;
+                }
             }
         }
     }
+    return 0;
+}
 
-    if (!diagonais_riscadas(tabuleiro)) {
-        printf("Erro nas diagonais.\n");
-        valido = 0;
+// RISCA se já existe um branco na linha/coluna
+int riscar_se_ja_tem_branco(Jogo *j) {
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            char c = j->tab[i][k];
+            if (c >= 'a' && c <= 'z') {
+                int tem_branco = 0;
+                for (int x = 0; x < j->colunas; x++)
+                    if (j->tab[i][x] == toupper(c)) tem_branco = 1;
+                for (int x = 0; x < j->linhas; x++)
+                    if (j->tab[x][k] == toupper(c)) tem_branco = 1;
+                if (tem_branco) {
+                    j->tab[i][k] = '#';
+                    printf("Dica: Risquei '%c' porque já existe branco na linha/coluna em %c%d\n", c, 'a'+k, i+1);
+                    return 1;
+                }
+            }
+        }
     }
+    return 0;
+}
 
-    if (!todasConectadas(tabuleiro)) {
-        printf("Letras não estão conectadas.\n");
-        valido = 0;
+// PINTA de branco se só pode existir naquela linha/coluna
+int pintar_unico_na_linha_coluna(Jogo *j) {
+    for (int i = 0; i < j->linhas; i++) {
+        for (int k = 0; k < j->colunas; k++) {
+            char c = j->tab[i][k];
+            if (c >= 'a' && c <= 'z') {
+                int count_linha = 0, count_coluna = 0;
+                for (int x = 0; x < j->colunas; x++)
+                    if (j->tab[i][x] == c) count_linha++;
+                for (int x = 0; x < j->linhas; x++)
+                    if (j->tab[x][k] == c) count_coluna++;
+                if (count_linha == 1 || count_coluna == 1) {
+                    j->tab[i][k] = toupper(c);
+                    printf("Dica: Pintei '%c' de branco por ser único na linha/coluna em %c%d\n", c, 'a'+k, i+1);
+                    return 1;
+                }
+            }
+        }
     }
+    return 0;
+}
 
-    if (valido) {
-        printf("Tabuleiro final é válido ✅\n");
-    } else {
-        printf("Tabuleiro final contém erros ❌\n");
+int dica(Jogo *j) {
+    if (riscar_se_ja_tem_branco(j)) return 1;
+    if (riscar_replicas(j)) return 1;
+    if (pintar_unico_na_linha_coluna(j)) return 1;
+    if (pintar_vizinho_riscada(j)) return 1;
+    if (pintar_para_nao_isolar(j)) return 1;
+    return 0;
+}
+
+void resolver(Jogo *j) {
+    int passos = 0;
+    while (dica(j)) {
+        imprimir(j);
+        passos++;
+        if (passos > 200) break; // segurança contra loop infinito
     }
+    printf("Resolução finalizada em %d passos!\n", passos);
 }
 
 int main() {
-    char tabuleiro[TAMANHO][TAMANHO] = {
-        {'e', 'c', 'a', 'd', 'c'},
-        {'d', 'c', 'd', 'e', '#'},
-        {'b', 'd', 'd', 'c', 'e'},
-        {'c', 'd', 'e', 'e', 'b'},
-        {'a', '#', 'c', 'b', '#'}
+    Jogo jogo = {
+        .linhas = 5,
+        .colunas = 5,
+        .tab = {
+            {'e','c','a','d','c'},
+            {'d','c','d','e','c'},
+            {'b','d','d','c','e'},
+            {'c','d','e','e','b'},
+            {'a','c','c','b','b'}
+        }
     };
-
     printf("Tabuleiro inicial:\n");
-    imprimirTabuleiro(tabuleiro);
-
-    aplicarRegras(tabuleiro);
-
-    printf("\nTabuleiro após aplicar as regras:\n");
-    imprimirTabuleiro(tabuleiro);
-
-    printf("\nVerificação final do tabuleiro:\n");
-    verificarTabuleiroFinal(tabuleiro);
-
+    imprimir(&jogo);
+    printf("Aplicando dicas passo a passo:\n");
+    resolver(&jogo);
+    printf("Tabuleiro final:\n");
+    imprimir(&jogo);
     return 0;
 }
