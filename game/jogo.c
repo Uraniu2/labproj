@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include "jogo.h"
 
+//RODAR o projeto
+//gcc -Wall -Wextra -pedantic -O1 -fno-omit-frame-pointer -g main.c jogo.c -o jogo
+//rodar o testes.c
+//gcc -Wall -Wextra -pedantic -O1 -fno-omit-frame-pointer -g testes.c jogo.c -o testar
 // Funções principais do puzzle
 
 int carregar_jogo(Jogo *j, const char *ficheiro) {
