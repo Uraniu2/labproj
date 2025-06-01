@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "jogo.h": "c"
+        "jogo.h": "c",
+        "ctype.h": "c"
     }
 }

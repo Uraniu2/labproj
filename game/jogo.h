@@ -22,10 +22,8 @@ void riscar(Jogo *j, int linha, int coluna);
 void copiar_jogo(Jogo *dest, Jogo *orig);
 void guardar_estado(Historico *h, Jogo *j);
 int desfazer(Historico *h, Jogo *j);
-void verificar_regras(Jogo *j);
+int verificar_regras(Jogo *j);   
 int verificar_conectividade1(Jogo *j);
-
-// NOVO: Dica e resolução
 int dica(Jogo *j);
 void resolver(Jogo *j);
 
