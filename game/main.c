@@ -55,7 +55,7 @@ int main() {
             char nome[50];
             sscanf(cmd, "g %s", nome);
             char ficheiro[100];
-            sprintf(ficheiro, "%s.txt", nome);
+            sprintf(ficheiro, "%s", nome);
             if (gravar_jogo(&jogo, ficheiro)) {
                 printf("Tabuleiro guardado\n");
             } else {
