@@ -97,7 +97,7 @@ int desfazer(Historico *h, Jogo *j) {
 // Agora retorna 1 se OK e 0 se erro
 int verificar_regras(Jogo *j) {
     int erro = 0;
-    // Regras de duplicação em branco (linha)
+    // Regras de duplicação em branco linha
     for (int i = 0; i < j->linhas; i++) {
         int usados[256] = {0};
         for (int k = 0; k < j->colunas; k++) {
@@ -145,7 +145,7 @@ int verificar_regras(Jogo *j) {
     return !erro;
 }
 
-// Retorna 1 se conectadas, 0 se há isoladas
+// Retorna 1 se conectadas 0 se ha isoladas
 int verificar_conectividade1(Jogo *j) {
     int visitado[MAX][MAX] = {{0}};
     int dx[] = {0, 1, 0, -1};
@@ -161,7 +161,7 @@ int verificar_conectividade1(Jogo *j) {
             }
     if (start_i == -1) {
         printf("Nao ha casas brancas.\n");
-        return 1; // Considera OK se não há brancas
+        return 1; // Considera OK se não ha brancas
     }
 
     int pilha[MAX*MAX][2];
@@ -198,7 +198,7 @@ int verificar_conectividade1(Jogo *j) {
     return !isolada;
 }
 
-// --- Dicas e resolução automática ---
+// Dicas e resolução automática 
 
 static int riscar_se_ja_tem_branco(Jogo *j) {
     for (int i = 0; i < j->linhas; i++) {

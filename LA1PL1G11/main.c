@@ -68,26 +68,33 @@ int main() {
             } else {
                 printf("Nenhuma dica possível.\n");
             }
-        } else if (cmd[0] == 'R' || cmd[0] == 'A') {
+        } else if (cmd[0] == 'R') {
             guardar_estado(&hist, &jogo);
             resolver(&jogo);
             mostrar_tabuleiro(&jogo);
-        }else if (cmd[0] == 'h') {
+        } else if (cmd[0] == 'A') {
+            guardar_estado(&hist, &jogo);
+            if (dica(&jogo)) {
+                mostrar_tabuleiro(&jogo);
+            } else {
+                printf("Nenhuma dica possível.\n");
+            }
+        } else if (cmd[0] == 'h') {
             printf("Comandos disponíveis:\n");
-        printf("g <jogo>       - gravar o estado atual do jogo num ficheiro\n");
-        printf("l <jogo>       - ler o estado do jogo de um ficheiro\n");
-        printf("<coordenada>   - jogar numa coordenada (<letra><número>)\n");
-        printf("b <coordenada> - colocar a letra da casa correspondente à coordenada em maiúsculas\n");
-        printf("r <coordenada> - colocar um # no local da letra\n");
-        printf("v              - verificar o estado do jogo e apontar todas as restrições violadas\n");
-        printf("a              - ajudar mudando o estado de todas as casas que se conseguem inferir\n");
-        printf("A              - invocar o comando 'a' até não haver mais alterações\n");
-        printf("R              - resolver <o jogo\n");
-        printf("d              - desfazer o último comando executado\n");
-        printf("s              - sair do programa\n");
-        printf("h ou h(Etc..)  - mostrar esta mensagem de ajuda\n"); 
-        }else {
-        printf("Comando desconhecido.\n");
+            printf("g <jogo>       - gravar o estado atual do jogo num ficheiro\n");
+            printf("l <jogo>       - ler o estado do jogo de um ficheiro\n");
+            printf("<coordenada>   - jogar numa coordenada (<letra><número>)\n");
+            printf("b <coordenada> - colocar a letra da casa correspondente à coordenada em maiúsculas\n");
+            printf("r <coordenada> - colocar um # no local da letra\n");
+            printf("v              - verificar o estado do jogo e apontar todas as restrições violadas\n");
+            printf("a              - ajudar mudando o estado de todas as casas que se conseguem inferir\n");
+            printf("A              - aplicar uma dica automática\n");
+            printf("R              - resolver o jogo\n");
+            printf("d              - desfazer o último comando executado\n");
+            printf("s              - sair do programa\n");
+            printf("h ou h(Etc..)  - mostrar esta mensagem de ajuda\n"); 
+        } else {
+            printf("Comando desconhecido.\n");
         }
     }
 
